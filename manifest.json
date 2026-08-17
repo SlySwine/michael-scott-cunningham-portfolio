@@ -1,0 +1,36 @@
+{
+  "title": "Michael Scott Cunningham Portfolio",
+  "source": "michael-scott-cunningham-site-v3",
+  "visualAnchor": "approved blue-glasses watercolor-and-ink hero",
+  "palette": {
+    "paper": "#f5f3f8",
+    "ink": "#171a2b",
+    "indigo": "#303658",
+    "blue": "#c3d5e8",
+    "violet": "#bda3cf",
+    "peach": "#e4bfa7",
+    "ochre": "#d7c28d"
+  },
+  "artwork": [
+    {
+      "desktop": "hero-ai-lead-clean.png",
+      "mobile": "hero-ai-lead-mobile.png",
+      "alt": "Editorial watercolor and ink illustration of Michael working with a laptop"
+    },
+    {
+      "desktop": "creative-systems-clean.png",
+      "mobile": "creative-systems-mobile-clean.png",
+      "alt": "Editorial watercolor and ink illustration of Michael building creative systems"
+    },
+    {
+      "desktop": "live-experiences.png",
+      "mobile": "live-experiences-mobile.png",
+      "alt": "Editorial watercolor and ink illustration of Michael filming a live outdoor event"
+    },
+    {
+      "desktop": "made-to-move.png",
+      "mobile": "made-to-move-mobile.png",
+      "alt": "Editorial watercolor and ink illustration of Michael riding BMX with his daughter"
+    }
+  ]
+}

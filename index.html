@@ -1,0 +1,871 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f3f8">
+  <meta name="description" content="Michael Scott Cunningham is an AI lead and creative systems builder working across AI adoption, multimedia, live experiences, and practical product experiments.">
+  <meta property="og:title" content="Michael Scott Cunningham — AI Lead & Creative Systems Builder">
+  <meta property="og:description" content="Turning new technology into useful workflows, memorable experiences, and things people can actually use.">
+  <meta property="og:type" content="website">
+  <title>Michael Scott Cunningham — AI Lead & Creative Systems Builder</title>
+  <style>
+    :root {
+      --paper: #f5f3f8;
+      --paper-2: #eceaf1;
+      --ink: #171a2b;
+      --muted: #66647a;
+      --line: rgba(23, 26, 43, .16);
+      --line-strong: rgba(23, 26, 43, .42);
+      --sage: #9faec7;
+      --sage-deep: #303658;
+      --sky: #c3d5e8;
+      --peach: #e4bfa7;
+      --yellow: #d7c28d;
+      --white: #fffdf9;
+      --shell: min(1160px, calc(100vw - 40px));
+      --serif: Georgia, "Times New Roman", Times, serif;
+      --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: .18;
+      background-image:
+        linear-gradient(rgba(23,26,43,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(23,26,43,.025) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: linear-gradient(to bottom, black, transparent 78%);
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    ::selection { background: var(--yellow); color: var(--ink); }
+
+    .skip-link {
+      position: fixed;
+      left: 14px;
+      top: 14px;
+      transform: translateY(-160%);
+      z-index: 9999;
+      background: var(--ink);
+      color: white;
+      padding: 10px 14px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .skip-link:focus { transform: translateY(0); }
+    .shell { width: var(--shell); margin-inline: auto; }
+
+    .site-header {
+      width: min(1240px, calc(100vw - 24px));
+      margin: 12px auto 0;
+      min-height: 64px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 24px;
+      padding: 9px 10px;
+      position: sticky;
+      top: 10px;
+      z-index: 50;
+      transition: background .2s ease, border-color .2s ease, box-shadow .2s ease;
+      border: 1px solid transparent;
+      border-radius: 999px;
+    }
+    .site-header.is-scrolled {
+      background: rgba(245,243,248,.9);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-color: var(--line);
+      box-shadow: 0 10px 34px rgba(20,20,20,.08);
+    }
+    .identity {
+      width: fit-content;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 14px 9px 9px;
+      border: 1px solid var(--ink);
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 760;
+      letter-spacing: -.015em;
+      background: rgba(255,253,249,.78);
+    }
+    .identity-mark {
+      display: grid;
+      place-items: center;
+      width: 31px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: var(--ink);
+      color: var(--paper);
+      font-size: .66rem;
+      letter-spacing: .05em;
+    }
+    .site-nav { display: flex; align-items: center; justify-content: center; gap: 28px; }
+    .site-nav a, .social-top a {
+      text-decoration: none;
+      font-size: .82rem;
+      font-weight: 720;
+      position: relative;
+    }
+    .site-nav a::after, .social-top a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -5px;
+      height: 1px;
+      background: var(--ink);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .18s ease;
+    }
+    .site-nav a:hover::after, .social-top a:hover::after,
+    .site-nav a:focus-visible::after, .social-top a:focus-visible::after { transform: scaleX(1); }
+    .social-top { display: flex; align-items: center; justify-content: flex-end; gap: 18px; }
+
+    .hero { padding: clamp(62px, 9vw, 126px) 0 42px; }
+    .storyline {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: clamp(38px, 5vw, 70px);
+      color: var(--muted);
+      white-space: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+      font-size: .76rem;
+      font-weight: 690;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .storyline::-webkit-scrollbar { display: none; }
+    .storyline strong { color: var(--ink); }
+    .storyline i { width: 24px; height: 1px; background: var(--line-strong); flex: 0 0 auto; }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.06fr) minmax(360px, .94fr);
+      align-items: center;
+      gap: clamp(26px, 6vw, 84px);
+    }
+    .eyebrow {
+      margin: 0 0 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: .77rem;
+      font-weight: 760;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before {
+      content: "";
+      width: 9px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: var(--sage-deep);
+      box-shadow: 0 0 0 5px rgba(173,197,180,.42);
+    }
+    h1, h2, h3, p { text-wrap: pretty; }
+    h1 {
+      margin: 0;
+      max-width: 780px;
+      font-family: var(--serif);
+      font-size: clamp(4rem, 8.5vw, 8.5rem);
+      font-weight: 500;
+      line-height: .84;
+      letter-spacing: -.068em;
+    }
+    h1 span { display: block; }
+    h1 span:last-child { margin-left: clamp(26px, 5vw, 82px); font-style: italic; font-weight: 400; }
+    .hero-lede {
+      max-width: 680px;
+      margin: 36px 0 0;
+      font-size: clamp(1.35rem, 2.35vw, 2.15rem);
+      line-height: 1.12;
+      letter-spacing: -.036em;
+      font-weight: 690;
+    }
+    .hero-copy-secondary {
+      max-width: 590px;
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: 1.02rem;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+    .button {
+      min-height: 46px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 10px 17px;
+      border: 1px solid var(--ink);
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: .86rem;
+      font-weight: 760;
+      transition: transform .18s ease, background .18s ease, color .18s ease;
+    }
+    .button:hover { transform: translateY(-2px); }
+    .button-dark { background: var(--ink); color: var(--paper); }
+    .button-light { background: transparent; }
+    .button-light:hover { background: var(--white); }
+
+    .hero-art {
+      min-height: 600px;
+      position: relative;
+      display: grid;
+      place-items: end center;
+      isolation: isolate;
+    }
+    .hero-art::before {
+      content: "";
+      position: absolute;
+      inset: 8% 4% 2% 8%;
+      z-index: -2;
+      border-radius: 50% 48% 46% 55% / 53% 50% 55% 47%;
+      background: var(--sky);
+      transform: rotate(-5deg);
+    }
+    .hero-art::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 11%;
+      z-index: -1;
+      width: 150px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      border: 1px solid var(--ink);
+      background: var(--yellow);
+      box-shadow: 14px 14px 0 rgba(23,26,43,.08);
+    }
+    .hero-art img {
+      width: min(100%, 560px);
+      max-height: 650px;
+      object-fit: contain;
+      object-position: center bottom;
+      filter: drop-shadow(0 24px 18px rgba(20,20,20,.13));
+    }
+    .art-note {
+      position: absolute;
+      right: -12px;
+      top: 11%;
+      width: 155px;
+      padding: 12px 14px;
+      background: var(--white);
+      border: 1px solid var(--ink);
+      transform: rotate(4deg);
+      font-family: var(--serif);
+      font-size: 1rem;
+      line-height: 1.1;
+      box-shadow: 8px 8px 0 var(--peach);
+    }
+
+    .snapshot {
+      margin-top: clamp(64px, 9vw, 120px);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+    }
+    .snapshot article { padding: 28px 26px 30px 0; }
+    .snapshot article + article { border-left: 1px solid var(--line); padding-left: 26px; }
+    .label {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: .72rem;
+      font-weight: 790;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .snapshot h2 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 2.3vw, 2.3rem);
+      font-weight: 500;
+      letter-spacing: -.035em;
+    }
+    .snapshot p:last-child { margin: 12px 0 0; color: var(--muted); font-size: .92rem; }
+
+    .section { padding: clamp(84px, 11vw, 150px) 0; }
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(240px, .7fr) minmax(0, 1.3fr);
+      gap: 40px;
+      align-items: end;
+      margin-bottom: 48px;
+    }
+    .section-index {
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: .74rem;
+      font-weight: 760;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .section-index::after { content: ""; width: 54px; height: 1px; background: var(--line-strong); }
+    .section-head h2 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(3rem, 5.3vw, 5.8rem);
+      line-height: .92;
+      font-weight: 500;
+      letter-spacing: -.055em;
+    }
+
+    .experience-list { border-top: 1px solid var(--ink); }
+    .experience-row {
+      display: grid;
+      grid-template-columns: 1.05fr .75fr .65fr 1.55fr 34px;
+      gap: 24px;
+      align-items: start;
+      padding: 27px 0 28px;
+      border-bottom: 1px solid var(--line);
+      transition: padding-left .18s ease, background .18s ease;
+    }
+    .experience-row:hover { padding-left: 10px; background: rgba(255,254,250,.38); }
+    .experience-row h3 { margin: 0; font-size: 1.02rem; line-height: 1.2; }
+    .experience-row .company { font-family: var(--serif); font-size: 1.06rem; }
+    .experience-row time { color: var(--muted); font-size: .82rem; }
+    .experience-row .desc { margin: 0; color: var(--muted); font-size: .91rem; }
+    .experience-row .arrow { font-family: var(--serif); font-size: 1.35rem; transition: transform .18s ease; }
+    .experience-row:hover .arrow { transform: translate(3px,-3px); }
+
+    .practice-wrap { background: var(--paper-2); border-block: 1px solid var(--line); }
+    .practice {
+      min-height: 680px;
+      display: grid;
+      grid-template-columns: minmax(340px, .88fr) minmax(0, 1.12fr);
+      gap: clamp(46px, 9vw, 130px);
+      align-items: center;
+      padding-block: clamp(80px, 10vw, 136px);
+    }
+    .practice.reverse { grid-template-columns: minmax(0, 1.12fr) minmax(340px, .88fr); }
+    .practice.reverse .practice-art { order: 2; }
+    .practice-art {
+      position: relative;
+      min-height: 560px;
+      display: grid;
+      place-items: end center;
+      isolation: isolate;
+    }
+    .practice-art::before {
+      content: "";
+      position: absolute;
+      inset: 10% 2% 5%;
+      z-index: -2;
+      border-radius: 47% 53% 58% 42% / 53% 42% 58% 47%;
+      background: var(--blob, var(--sage));
+      transform: rotate(var(--tilt, 4deg));
+    }
+    .practice-art::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      right: 1%;
+      top: 10%;
+      width: 110px;
+      aspect-ratio: 1;
+      border: 1px solid var(--ink);
+      border-radius: 50%;
+      background: var(--dot, var(--peach));
+    }
+    .practice-art img {
+      width: min(100%, 520px);
+      max-height: 610px;
+      object-fit: contain;
+      object-position: center bottom;
+      filter: drop-shadow(0 24px 20px rgba(20,20,20,.11));
+    }
+    .practice-copy .number { margin: 0 0 18px; color: var(--muted); font-size: .72rem; font-weight: 790; letter-spacing: .12em; text-transform: uppercase; }
+    .practice-copy h2 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(3rem, 6vw, 6.4rem);
+      font-weight: 500;
+      line-height: .9;
+      letter-spacing: -.06em;
+    }
+    .practice-copy .lead { max-width: 680px; margin: 28px 0 0; font-size: clamp(1.22rem, 2vw, 1.75rem); line-height: 1.18; letter-spacing: -.026em; font-weight: 650; }
+    .practice-copy .body { max-width: 630px; margin: 16px 0 0; color: var(--muted); }
+    .selected {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line-strong);
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 16px 24px;
+    }
+    .selected strong { font-size: .72rem; letter-spacing: .11em; text-transform: uppercase; }
+    .selected ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+    .selected li {
+      border: 1px solid var(--ink);
+      border-radius: 999px;
+      padding: 7px 10px;
+      background: rgba(255,254,250,.42);
+      font-size: .75rem;
+      font-weight: 700;
+    }
+
+    .contact { padding: clamp(100px, 13vw, 190px) 0 44px; }
+    .contact-card {
+      display: grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 50px;
+      align-items: end;
+      padding: clamp(34px, 6vw, 72px);
+      border: 1px solid var(--ink);
+      border-radius: 32px;
+      background: var(--sage-deep);
+      color: var(--paper);
+      overflow: hidden;
+      position: relative;
+    }
+    .contact-card::before {
+      content: "";
+      position: absolute;
+      width: 290px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      right: -80px;
+      top: -110px;
+      border: 1px solid rgba(255,255,255,.38);
+      box-shadow: 0 0 0 45px rgba(255,255,255,.04), 0 0 0 90px rgba(255,255,255,.03);
+    }
+    .contact h2 {
+      margin: 0;
+      max-width: 760px;
+      font-family: var(--serif);
+      font-size: clamp(3.4rem, 7vw, 7rem);
+      font-weight: 500;
+      line-height: .9;
+      letter-spacing: -.058em;
+    }
+    .contact p { max-width: 650px; margin: 22px 0 0; color: rgba(247,245,239,.76); font-size: 1rem; }
+    .contact-links { display: grid; gap: 10px; justify-items: stretch; position: relative; z-index: 1; }
+    .contact-links a {
+      min-height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 18px;
+      border: 1px solid rgba(247,245,239,.66);
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 760;
+      transition: background .18s ease, color .18s ease, transform .18s ease;
+    }
+    .contact-links a:hover { background: var(--paper); color: var(--ink); transform: translateX(4px); }
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding-top: 24px;
+      color: var(--muted);
+      font-size: .72rem;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .65s ease, transform .65s ease; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+      .site-header { grid-template-columns: 1fr auto; }
+      .site-nav { display: none; }
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-art { min-height: 520px; margin-top: 20px; }
+      .snapshot { grid-template-columns: 1fr; }
+      .snapshot article { padding: 24px 0; }
+      .snapshot article + article { border-left: 0; border-top: 1px solid var(--line); padding-left: 0; }
+      .section-head { grid-template-columns: 1fr; gap: 22px; }
+      .experience-row { grid-template-columns: 1fr 1fr; gap: 8px 22px; }
+      .experience-row .desc { grid-column: 1 / -1; }
+      .experience-row .arrow { display: none; }
+      .practice, .practice.reverse { grid-template-columns: 1fr; min-height: auto; }
+      .practice.reverse .practice-art { order: 0; }
+      .practice-art { min-height: 510px; }
+      .contact-card { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 620px) {
+      :root { --shell: min(100% - 26px, 1160px); }
+      .site-header { width: calc(100vw - 16px); top: 7px; min-height: 58px; }
+      .identity { padding-right: 10px; font-size: .8rem; }
+      .identity-mark { width: 28px; }
+      .social-top a:not(:first-child) { display: none; }
+      .hero { padding-top: 56px; }
+      h1 { font-size: clamp(3.25rem, 17vw, 5.1rem); }
+      h1 span:last-child { margin-left: 0; }
+      .hero-art { min-height: 430px; }
+      .hero-art img { max-height: 500px; }
+      .art-note { right: 4px; top: 3%; width: 132px; font-size: .88rem; }
+      .section { padding-block: 88px; }
+      .experience-row { grid-template-columns: 1fr; }
+      .experience-row .company { margin-top: 2px; }
+      .practice { padding-block: 84px; gap: 38px; }
+      .practice-art { min-height: 430px; }
+      .practice-copy h2 { font-size: clamp(3.25rem, 15vw, 5rem); }
+      .selected { grid-template-columns: 1fr; }
+      .contact { padding-top: 90px; }
+      .contact-card { padding: 34px 24px; border-radius: 24px; }
+      .footer { flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  
+
+    /* Final illustration system: derived from the approved blue-glasses watercolor anchor. */
+    html,
+    body { overflow-x: clip; }
+
+    .hero-art,
+    .practice-art {
+      min-height: 0;
+      place-items: center;
+      padding: 22px;
+    }
+    .hero-art { align-self: center; }
+    .hero-grid,
+    .practice,
+    .practice.reverse {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+    .hero-art::before,
+    .practice-art::before {
+      inset: 5% -1% -5% 5%;
+      border: 1px solid rgba(23, 26, 43, .12);
+      border-radius: 42px 20px 42px 20px;
+      background: linear-gradient(145deg, var(--blob, var(--sky)), #d9c9e3 72%);
+      transform: rotate(var(--tilt, -2deg));
+    }
+    .hero-art::after,
+    .practice-art::after {
+      width: 82px;
+      right: 0;
+      left: auto;
+      top: auto;
+      bottom: -2px;
+      border-color: var(--ink);
+      background: var(--dot, var(--peach));
+      box-shadow: 10px 10px 0 rgba(23, 26, 43, .08);
+    }
+    .art-picture {
+      position: relative;
+      z-index: 0;
+      display: block;
+      width: 100%;
+      aspect-ratio: 3 / 2;
+    }
+    .hero-art img,
+    .practice-art img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      max-height: none;
+      aspect-ratio: auto;
+      object-fit: contain;
+      object-position: center;
+      border: 1px solid var(--line-strong);
+      border-radius: 34px 14px 34px 14px;
+      background: var(--white);
+      box-shadow: 0 26px 55px rgba(31, 32, 57, .16);
+      filter: none;
+    }
+    .art-note {
+      right: -6px;
+      top: 0;
+      z-index: 2;
+      border-color: var(--ink);
+      box-shadow: 8px 8px 0 #bda3cf;
+    }
+    .practice { min-height: 0; }
+    .practice.reverse .practice-art::before { background: linear-gradient(145deg, var(--peach), #b9cde2 76%); }
+    #made-to-move .practice-art::before { background: linear-gradient(145deg, #d7c28d, #b9cde2 72%); }
+    .contact-card { box-shadow: 0 34px 80px rgba(35, 37, 69, .18); }
+
+    /* Keep every section present for static previews, print, and no-script visitors. */
+    .reveal,
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid,
+      .practice,
+      .practice.reverse { grid-template-columns: 1fr; }
+      .hero-art,
+      .practice-art { min-height: 0; padding: 18px; }
+      .practice { min-height: 0; }
+    }
+
+    @media (max-width: 620px) {
+      .hero-art,
+      .practice-art { min-height: 0; padding: 10px; }
+      .art-picture {
+        width: 100%;
+        max-width: 420px;
+        margin-inline: auto;
+        aspect-ratio: 2 / 3;
+      }
+      .hero-art img,
+      .practice-art img { border-radius: 25px 10px 25px 10px; }
+      .hero-art::before,
+      .practice-art::before { border-radius: 30px 14px 30px 14px; }
+      .art-note { top: -18px; right: 4px; }
+    }
+
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" data-header>
+    <a class="identity" href="#top" aria-label="Michael Scott Cunningham, back to top">
+      <span class="identity-mark" aria-hidden="true">MSC</span>
+      <span>Michael Scott Cunningham</span>
+    </a>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="#experience">Experience</a>
+      <a href="#creative-systems">Creative systems</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="social-top" aria-label="Social profiles">
+      <a href="https://www.linkedin.com/in/michael-scott-cunningham" target="_blank" rel="noreferrer">LinkedIn ↗</a>
+      <a href="https://github.com/SlySwine" target="_blank" rel="noreferrer">GitHub</a>
+      <a href="https://x.com/SlySwine" target="_blank" rel="noreferrer">X</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero shell" id="top">
+      <div class="storyline" aria-label="Career path">
+        <strong>Phoenix, Arizona</strong><i></i>
+        Photography<i></i>
+        Fabrication<i></i>
+        Brand<i></i>
+        Live experiences<i></i>
+        <strong>AI systems</strong>
+      </div>
+
+      <div class="hero-grid">
+        <div class="hero-copy reveal">
+          <p class="eyebrow">AI lead · creative systems builder</p>
+          <h1><span>Michael Scott</span><span>Cunningham</span></h1>
+          <p class="hero-lede">Turning new technology into useful workflows, memorable experiences, and things people can actually use.</p>
+          <p class="hero-copy-secondary">Twenty-plus years across photography, design, production, entrepreneurship, event marketing, and creative operations—now focused on practical AI adoption and building the systems around it.</p>
+          <div class="hero-actions">
+            <a class="button button-dark" href="#experience">See the work <span aria-hidden="true">↓</span></a>
+            <a class="button button-light" href="https://www.linkedin.com/in/michael-scott-cunningham" target="_blank" rel="noreferrer">LinkedIn <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+
+        <div class="hero-art reveal" aria-label="Illustration of Michael working on a laptop">
+          <picture class="art-picture"><source media="(max-width: 620px)" srcset="assets/hero-ai-lead-mobile.png"><img src="assets/hero-ai-lead-clean.png" alt="Editorial watercolor and ink illustration of Michael working with a laptop" width="1536" height="1024" decoding="async"></picture>
+          
+        </div>
+      </div>
+
+      <div class="snapshot reveal" aria-label="Career summary">
+        <article>
+          <p class="label">Now</p>
+          <h2>AI Lead</h2>
+          <p>Leading AI adoption, team enablement, workflow design, model evaluation, automation experiments, and local-agent pilots at Mi-One Brands.</p>
+        </article>
+        <article>
+          <p class="label">Alongside that</p>
+          <h2>Event + Creative Marketing</h2>
+          <p>Connecting brand strategy, multimedia production, live events, sales enablement, print, and vendor execution across Mi-Pod, Vaping.com, and related brands.</p>
+        </article>
+        <article>
+          <p class="label">Foundation</p>
+          <h2>Builder by default</h2>
+          <p>Commercial photographer, designer, fabricator, founder, brand specialist, and hands-on problem solver before AI became the newest tool in the shop.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section shell" id="experience">
+      <div class="section-head reveal">
+        <p class="section-index">01 · Experience</p>
+        <h2>A career built by following the work.</h2>
+      </div>
+
+      <div class="experience-list">
+        <article class="experience-row reveal">
+          <h3>Event & Creative Marketing Manager / AI Lead</h3>
+          <div class="company">Mi-One Brands</div>
+          <time datetime="2022-10">Oct 2022 — present</time>
+          <p class="desc">Leading practical AI adoption while directing multimedia, events, sales-enablement materials, production systems, and cross-functional creative execution.</p>
+          <span class="arrow" aria-hidden="true">↗</span>
+        </article>
+        <article class="experience-row reveal">
+          <h3>Brand & Image Specialist</h3>
+          <div class="company">Trask Performance</div>
+          <time datetime="2020-02/2022-08">Feb 2020 — Aug 2022</time>
+          <p class="desc">Owned photography, video, graphics, social content, and event presence for a performance-motorcycle brand.</p>
+          <span class="arrow" aria-hidden="true">↗</span>
+        </article>
+        <article class="experience-row reveal">
+          <h3>Founder / Creative Director</h3>
+          <div class="company">HeadKace Motorcycle</div>
+          <time datetime="2013-10/2019-08">Oct 2013 — Aug 2019</time>
+          <p class="desc">Built a motorcycle business from the ground up across fabrication, brand, sales, operations, vendors, and customer experience.</p>
+          <span class="arrow" aria-hidden="true">↗</span>
+        </article>
+        <article class="experience-row reveal">
+          <h3>Owner / Commercial Photographer</h3>
+          <div class="company">Michael Scott Photography</div>
+          <time datetime="2007-08/2013-10">Aug 2007 — Oct 2013</time>
+          <p class="desc">Commercial photography and production from preproduction and lighting through capture, retouching, design, and final delivery.</p>
+          <span class="arrow" aria-hidden="true">↗</span>
+        </article>
+      </div>
+    </section>
+
+    <div class="practice-wrap" id="creative-systems">
+      <section class="practice shell">
+        <div class="practice-art reveal" style="--blob: var(--sky); --dot: var(--yellow); --tilt: -4deg;">
+          <picture class="art-picture"><source media="(max-width: 620px)" srcset="assets/creative-systems-mobile-clean.png"><img src="assets/creative-systems-clean.png" alt="Editorial watercolor and ink illustration of Michael building creative systems" width="1536" height="1024" decoding="async"></picture>
+        </div>
+        <div class="practice-copy reveal">
+          <p class="number">02 · Creative systems</p>
+          <h2>Make the new thing useful.</h2>
+          <p class="lead">The interesting part of AI is not the demo. It is what happens when a real team can use it on Monday morning.</p>
+          <p class="body">I translate fast-moving model capabilities into practical workflows, training, governance, creative acceleration, and lightweight tools. The goal is not “more AI.” The goal is better work with less friction.</p>
+          <div class="selected">
+            <strong>Selected focus</strong>
+            <ul>
+              <li>AI adoption + training</li>
+              <li>Workflow automation</li>
+              <li>Local-agent pilots</li>
+              <li>Model evaluation</li>
+              <li>Vibe-coded tools</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="practice reverse shell" id="live-experiences">
+      <div class="practice-art reveal" style="--blob: var(--peach); --dot: var(--sage); --tilt: 4deg;">
+        <picture class="art-picture"><source media="(max-width: 620px)" srcset="assets/live-experiences-mobile.png"><img src="assets/live-experiences.png" alt="Editorial watercolor and ink illustration of Michael filming a live outdoor event" width="1536" height="1024" decoding="async"></picture>
+      </div>
+      <div class="practice-copy reveal">
+        <p class="number">03 · Live experiences</p>
+        <h2>Strategy that survives contact with reality.</h2>
+        <p class="lead">A live activation has to look right, feel right, arrive on time, fit the space, satisfy compliance, and work when the doors open.</p>
+        <p class="body">That is where creative direction and operations become the same job: concept, visual system, production, staging, vendors, logistics, installation, content capture, and the inevitable last-minute fix.</p>
+        <div class="selected">
+          <strong>Representative work</strong>
+          <ul>
+            <li>Arizona Bike Week</li>
+            <li>Arizona Taco Fest</li>
+            <li>Trade-show systems</li>
+            <li>Retail environments</li>
+            <li>Photo + video production</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <div class="practice-wrap" id="made-to-move">
+      <section class="practice shell">
+        <div class="practice-art reveal" style="--blob: var(--yellow); --dot: var(--sky); --tilt: -3deg;">
+          <picture class="art-picture"><source media="(max-width: 620px)" srcset="assets/made-to-move-mobile.png"><img src="assets/made-to-move.png" alt="Editorial watercolor and ink illustration of Michael riding BMX with his daughter" width="1536" height="1024" decoding="async"></picture>
+        </div>
+        <div class="practice-copy reveal">
+          <p class="number">04 · Made to move</p>
+          <h2>Always building something.</h2>
+          <p class="lead">Motorcycles, BMX, photography, cooking, product ideas, and Arizona roads keep the work connected to motion, materials, and people.</p>
+          <p class="body">The mediums change, but the instinct does not: understand how something works, improve it, give it a point of view, then put it into the world.</p>
+          <div class="selected">
+            <strong>Current experiments</strong>
+            <ul>
+              <li>Sly Swine Moto Gear</li>
+              <li>Motorcycle ride tracker</li>
+              <li>Real-time usage tools</li>
+              <li>AI-assisted creative systems</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="contact shell" id="contact">
+      <div class="contact-card reveal">
+        <div>
+          <p class="label" style="color: rgba(247,245,239,.65);">Reach out</p>
+          <h2>Build something that has to work in the real world.</h2>
+          <p>AI strategy, creative systems, multimedia, live experiences, product experiments, or the messy problem connecting all of them.</p>
+        </div>
+        <div class="contact-links">
+          <a href="https://www.linkedin.com/in/michael-scott-cunningham" target="_blank" rel="noreferrer"><span>LinkedIn</span><span aria-hidden="true">↗</span></a>
+          <a href="https://github.com/SlySwine" target="_blank" rel="noreferrer"><span>GitHub</span><span aria-hidden="true">↗</span></a>
+          <a href="https://x.com/SlySwine" target="_blank" rel="noreferrer"><span>X</span><span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+      <footer class="footer">
+        <span>© <span data-year></span> Michael Scott Cunningham</span>
+        <span>Phoenix, Arizona</span>
+      </footer>
+    </section>
+  </main>
+
+  <script>
+    const header = document.querySelector('[data-header]');
+    const setHeader = () => header.classList.toggle('is-scrolled', window.scrollY > 18);
+    setHeader();
+    window.addEventListener('scroll', setHeader, { passive: true });
+
+    document.querySelector('[data-year]').textContent = new Date().getFullYear();
+
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: .12 });
+      document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+    } else {
+      document.querySelectorAll('.reveal').forEach((el) => el.classList.add('in'));
+    }
+  </script>
+</body>
+</html>
