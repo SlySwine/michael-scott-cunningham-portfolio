@@ -1,0 +1,6 @@
+site/node_modules/
+site/dist/
+site/out/
+site/.vinext/
+site/.next/
+site/*.tsbuildinfo
