@@ -21,7 +21,7 @@ export default function Home(){return <>
       <div className="hero-grid">
         <div className="hero-copy reveal">
           <p className="eyebrow">AI lead · creative systems builder</p>
-          <h1><span>Michael Scott</span><span>Cunningham</span></h1>
+          <h1><span>Michael Scott</span>{' '}<span>Cunningham</span></h1>
           <p className="hero-lede">Turning new technology into useful workflows, memorable experiences, and things people can actually use.</p>
           <p className="hero-copy-secondary">Twenty-plus years across photography, design, production, entrepreneurship, event marketing, and creative operations—now focused on practical AI adoption and building the systems around it.</p>
           <div className="hero-actions">
