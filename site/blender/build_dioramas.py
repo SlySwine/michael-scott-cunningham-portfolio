@@ -70,7 +70,7 @@ def camera(parent,x,y,z,s=1):
  sphere('Shutter',.02,'metal',.14,.15,.02,p);return p
 
 def character(parent,x=0,z=0,pose='stand',rot=0):
- root=empty('MICHAEL',x,0,z,parent,rot);seated=pose in ('desk','ride','family');hip=.73 if seated else (.48 if pose in ('kneel','kneel-low') else .92)
+ root=empty('MICHAEL',x,0,z,parent,rot);seated=pose in ('desk','ride','family');hip=.73 if seated else (.35 if pose=='kneel-low' else .48 if pose=='kneel' else .92)
  box('Hips',.43,.21,.31,'pants',0,hip,0,root,bevel=.07)
  for side in (-1,1):
   sx=side*.14
@@ -145,24 +145,59 @@ def screen(p,x,y,z,w=1.1,h=.7):
 
 def motorcycle(parent,x=0,z=0,s=1):
  p=empty('MOTORCYCLE',x,0,z,parent);p.scale=(s,s,s)
- for xx in (-.86,.91):
-  wheel=empty('WHEEL',xx,.48,0,p);ring('Tire',.37,.104,'dark',parent=wheel);ring('Chrome rim',.285,.025,'metal',parent=wheel)
-  for i in range(16):
-   a=i*math.pi/8;rod('Spoke',(0,0,0),(math.cos(a)*.282,math.sin(a)*.282,0),.008,'metal',wheel)
-  axle=cylinder('Hub',.075,.27,'metal',parent=wheel);axle.rotation_euler[0]=math.pi/2
-  for i in range(24):
-   a=i*math.pi/12;o=box('Tire tread',.06,.026,.17,'464A4D',xx+math.cos(a)*.466,.48+math.sin(a)*.466,0,p,bevel=.008);o.rotation_euler[1]=-a
- for zz in (-.13,.13):
-  for a,b in [((-.86,.48,zz),(.09,1.0,zz)),((-.86,.48,zz),(-.08,.5,zz)),((-.08,.5,zz),(.43,1.14,zz)),((.43,1.14,zz),(.91,.48,zz))]:rod('Frame',a,b,.033,'dark' if a[0]<.4 else 'metal',p)
- box('Engine',.58,.42,.43,'metal',-.03,.69,0,p,bevel=.06)
- for i in range(6):box('Cooling fin',.61,.022,.46,'798891',-.03,.53+i*.065,0,p,bevel=.005)
- sphere('Petrol tank',.34,'829AA9',.27,1.04,0,p,scale=(1.4,.68,.78));cylinder('Fuel cap',.052,.02,'metal',.23,1.27,0,p)
- box('Saddle',.69,.13,.34,'boot',-.39,1.05,0,p,bevel=.06)
- for i in range(5):box('Seat stitching',.012,.009,.30,'957862',-.64+i*.12,1.119,0,p,bevel=.003)
- rod('Steering',(.5,1.08,0),(.59,1.41,0),.03,'metal',p);rod('Handlebars',(.59,1.41,-.32),(.59,1.41,.32),.028,'metal',p)
- for zz in (-.33,.33):rod('Grips',(.59,1.41,zz),(.44,1.42,zz),.035,'dark',p)
- lamp=cylinder('Headlight housing',.146,.18,'metal',.74,1.13,0,p);lamp.rotation_euler[1]=math.pi/2;glass=cylinder('Headlight',.123,.012,'F5E4BA',.84,1.13,0,p);glass.rotation_euler[1]=math.pi/2
- rod('Exhaust',(-.55,.43,.26),(.51,.43,.26),.055,'metal',p);sphere('Tail light',.05,'B86253',-.83,1.01,0,p)
+ # A low road-bike silhouette: smooth tires, a stepped saddle and twin rear shocks.
+ for xx in (-1.0,1.02):
+  wheel=empty('WHEEL',xx,.46,0,p);ring('Road tire',.35,.10,'dark',parent=wheel);ring('Chrome rim',.272,.024,'metal',parent=wheel)
+  for i in range(20):
+   a=i*math.tau/20;rod('Spoke',(0,0,0),(math.cos(a)*.27,math.sin(a)*.27,0),.007,'metal',wheel)
+  axle=cylinder('Hub',.072,.28,'metal',parent=wheel);axle.rotation_euler[0]=math.pi/2
+  disc=cylinder('Brake disc',.16,.018,'metal',0,0,.135,wheel);disc.rotation_euler[0]=math.pi/2
+ for zz in (-.15,.15):
+  for a,b in [((-1.,.46,zz),(-.47,.48,zz)),((-.47,.48,zz),(.38,.43,zz)),((.38,.43,zz),(.59,1.16,zz)),((.59,1.16,zz),(-.54,.95,zz)),((-.54,.95,zz),(-.47,.48,zz))]:rod('Cradle frame',a,b,.032,'dark',p)
+  rod('Front fork',(.61,1.19,zz),(1.02,.46,zz),.034,'metal',p)
+  rod('Fork slider',(.85,.76,zz),(1.02,.46,zz),.045,'metal',p)
+  low=(-.98,.49,zz*1.6);high=(-.59,.98,zz*1.6)
+  shock=empty('Exposed rear shock',*low,p)
+  shock.rotation_euler=(pos(high)-pos(low)).to_track_quat('Z','Y').to_euler()
+  length=(pos(high)-pos(low)).length
+  cylinder('Shock damper',.035,length,'dark',0,length/2,0,shock)
+  for j in range(10):ring('Shock spring',.051,.012,'metal',0,.08+j*.045,0,shock,flat=True)
+ # The separate, canted banks remain readable below the tank from either side.
+ engine=empty('V_TWIN_ENGINE',-.06,.53,0,p)
+ case=cylinder('Crankcase',.215,.36,'798891',parent=engine);case.rotation_euler[0]=math.pi/2
+ cover=cylinder('Timing cover',.15,.035,'metal',0,0,.20,engine);cover.rotation_euler[0]=math.pi/2
+ for side in (-1,1):
+  bank=empty('V_TWIN_REAR_CYLINDER' if side<0 else 'V_TWIN_FRONT_CYLINDER',side*.09,.08,0,engine)
+  bank.rotation_euler[1]=side*math.radians(22.5)
+  cylinder('Black cylinder barrel',.122,.32,'dark',0,.20,0,bank)
+  for j in range(7):box('Cylinder cooling fin',.29,.018,.31,'metal',0,.07+j*.047,0,bank,bevel=.006)
+  box('Rocker cover',.31,.09,.32,'metal',0,.405,0,bank,bevel=.025)
+  for xx in (-.075,.075):rod('Pushrod tube',(xx,.04,.16),(xx,.365,.16),.012,'metal',bank)
+  cable('Swept exhaust header',[(side*.23,.91,.18),(side*.29,.84,.29),(.16+side*.09,.59,.32),(.10,.39+side*.07,.34),(-.92,.39+side*.07,.34)],p,.035,'metal')
+  rod('Twin exhaust silencer',(-.38,.39+side*.07,.34),(-1.10,.39+side*.07,.34),.051,'metal',p)
+ cleaner=cylinder('Air cleaner',.115,.055,'metal',.05,.78,.24,p);cleaner.rotation_euler[0]=math.pi/2
+ sphere('Teardrop petrol tank',.30,'829AA9',.19,1.22,0,p,scale=(1.45,.60,.80))
+ cylinder('Fuel cap',.047,.019,'metal',.27,1.405,0,p)
+ box('Low rider saddle',.48,.10,.34,'boot',-.55,1.00,0,p,bevel=.055)
+ box('Raised pillion',.30,.12,.30,'boot',-.91,1.065,0,p,bevel=.055)
+ for j in range(4):box('Seat stitching',.01,.008,.27,'957862',-.71+j*.10,1.053,0,p,bevel=.003)
+ # Narrow curved steel fenders hug the road tires instead of adding off-road bulk.
+ for xx,width in [(-1.,.29),(1.02,.24)]:
+  vertices=[];faces=[]
+  for j in range(21):
+   angle=math.radians(25+j*6.5)
+   for zz in (-width/2,width/2):vertices.append(pos((xx+math.cos(angle)*.475,.46+math.sin(angle)*.475,zz)))
+  for j in range(20):faces.append((2*j,2*j+1,2*j+3,2*j+2))
+  mesh=bpy.data.meshes.new('Rolled fender');mesh.from_pydata(vertices,[],faces);mesh.update()
+  fender=bpy.data.objects.new('Road fender',mesh);CURRENT.collection.objects.link(fender);finish(fender,'Road fender','829AA9',p)
+  solid=fender.modifiers.new('Fender thickness','SOLIDIFY');solid.thickness=.022
+ rod('Handlebar riser',(.59,1.16,0),(.57,1.37,0),.027,'metal',p)
+ cable('Pullback handlebar',[(.40,1.40,-.34),(.55,1.43,-.23),(.57,1.37,0),(.55,1.43,.23),(.40,1.40,.34)],p,.024,'metal')
+ for zz in (-.34,.34):rod('Grip',(.40,1.40,zz),(.27,1.39,zz),.032,'dark',p)
+ lamp=cylinder('Round headlight housing',.13,.18,'metal',.77,1.17,0,p);lamp.rotation_euler[1]=math.pi/2
+ glass=cylinder('Round headlight',.112,.012,'F5E4BA',.865,1.17,0,p);glass.rotation_euler[1]=math.pi/2
+ for zz in (-.29,.29):rod('Foot peg',(-.17,.43,zz),(-.17,.43,zz*1.4),.028,'dark',p)
+ sphere('Tail light',.045,'B86253',-1.25,.89,0,p)
  return p
 
 def tripod(p,x,z,h=2):
@@ -204,37 +239,37 @@ def family_person(p,name,x,z,scale=.7,seated=True,working=False):
 
 def bmx(p,x=0,z=0):
  q=empty('BMX_BICYCLE',x,0,z,p)
- # Compact twenty-inch wheels, a diamond frame, a single gear and tall BMX bars.
- for xx in (-1.0,1.0):
-  wheel=empty('MOTION_bmx_wheel',xx,.55,0,q)
-  ring('BMX tire',.43,.075,'dark',parent=wheel);ring('Alloy rim',.359,.018,'metal',parent=wheel)
+ # Twenty-inch wheels relative to the family, with a short rear triangle and low seat.
+ for xx in (-.73,.73):
+  wheel=empty('MOTION_bmx_wheel',xx,.365,0,q)
+  ring('BMX tire',.275,.047,'dark',parent=wheel);ring('Alloy rim',.232,.014,'metal',parent=wheel)
   for i in range(24):
-   angle=i*math.pi/12;rod('BMX spoke',(0,0,0),(math.cos(angle)*.356,math.sin(angle)*.356,0),.006,'metal',wheel)
-  hub=cylinder('BMX axle',.054,.36,'metal',parent=wheel);hub.rotation_euler[0]=math.pi/2
+   angle=i*math.pi/12;rod('BMX spoke',(0,0,0),(math.cos(angle)*.23,math.sin(angle)*.23,0),.0045,'metal',wheel)
+  hub=cylinder('BMX axle',.037,.24,'metal',parent=wheel);hub.rotation_euler[0]=math.pi/2
   for side in (-1,1):
-   peg=cylinder('Axle peg',.037,.23,'dark',0,0,side*.23,wheel);peg.rotation_euler[0]=math.pi/2
- rear=(-1.0,.55,0);crank=(-.13,.46,0);seat=(-.38,1.20,0);head=(.69,1.24,0);front=(1.,.55,0)
- for name,v1,v2 in [('Top tube',seat,head),('Down tube',head,crank),('Seat tube',crank,seat)]:rod(name,v1,v2,.046,'729BCB',q)
+   peg=cylinder('Axle peg',.027,.14,'dark',0,0,side*.16,wheel);peg.rotation_euler[0]=math.pi/2
+ rear=(-.73,.365,0);crank=(-.13,.32,0);seat=(-.30,.78,0);head=(.43,.89,0)
+ for name,v1,v2 in [('Top tube',seat,head),('Down tube',head,crank),('Seat tube',crank,seat)]:rod(name,v1,v2,.032,'729BCB',q)
  for side in (-1,1):
-  rr=(rear[0],rear[1],side*.09);cc=(crank[0],crank[1],side*.07);ss=(seat[0],seat[1],side*.04)
-  rod('Chain stay',rr,cc,.027,'729BCB',q);rod('Seat stay',rr,ss,.026,'729BCB',q)
-  rod('BMX fork',(.70,1.23,side*.09),(1.,.55,side*.09),.031,'metal',q)
- rod('Seatpost',(-.38,1.16,0),(-.42,1.38,0),.026,'metal',q)
- box('BMX saddle',.42,.10,.23,'boot',-.46,1.40,0,q,bevel=.065)
- rod('Stem',(.69,1.22,0),(.68,1.47,0),.03,'metal',q)
- rod('Handlebar crossbar',(.68,1.55,-.28),(.68,1.55,.28),.022,'metal',q)
- rod('Bar base',(.68,1.45,-.17),(.68,1.45,.17),.026,'metal',q)
+  rr=(rear[0],rear[1],side*.065);cc=(crank[0],crank[1],side*.05);ss=(seat[0],seat[1],side*.03)
+  rod('Chain stay',rr,cc,.020,'729BCB',q);rod('Seat stay',rr,ss,.019,'729BCB',q)
+  rod('BMX fork',(.43,.89,side*.065),(.73,.365,side*.065),.023,'metal',q)
+ rod('Short seatpost',(-.30,.76,0),(-.32,.85,0),.021,'metal',q)
+ box('Low BMX saddle',.29,.07,.18,'boot',-.35,.86,0,q,bevel=.045)
+ rod('Stem',(.43,.89,0),(.44,.97,0),.024,'metal',q)
+ rod('Handlebar crossbar',(.42,1.055,-.19),(.42,1.055,.19),.017,'metal',q)
+ rod('Bar base',(.44,.97,-.12),(.44,.97,.12),.020,'metal',q)
  for side in (-1,1):
-  rod('BMX bar rise',(.68,1.45,side*.17),(.62,1.78,side*.32),.026,'metal',q)
-  rod('BMX grips',(.62,1.78,side*.30),(.58,1.78,side*.53),.038,'dark',q)
- ring('Chainring',.155,.019,'metal',-.13,.46,.14,q)
- ring('Rear sprocket',.073,.014,'metal',-1.,.55,.14,q)
- rod('Top chain run',(-.13,.615,.14),(-1.,.62,.14),.012,'dark',q)
- rod('Lower chain run',(-.13,.305,.14),(-1.,.477,.14),.012,'dark',q)
+  rod('BMX bar rise',(.44,.97,side*.12),(.39,1.17,side*.22),.020,'metal',q)
+  rod('BMX grips',(.39,1.17,side*.21),(.36,1.17,side*.35),.028,'dark',q)
+ ring('Chainring',.09,.014,'metal',-.13,.32,.14,q)
+ ring('Rear sprocket',.037,.010,'metal',-.73,.365,.14,q)
+ rod('Top chain run',(-.13,.41,.14),(-.73,.402,.14),.009,'dark',q)
+ rod('Lower chain run',(-.13,.23,.14),(-.73,.328,.14),.009,'dark',q)
  for side in (-1,1):
-  rod('Crank arm',(-.13,.46,side*.15),(-.13+side*.19,.46-side*.12,side*.15),.021,'metal',q)
-  box('Platform pedal',.17,.055,.20,'dark',-.13+side*.19,.46-side*.12,side*.24,q,bevel=.016)
- text('Frame decal','BMX',.10,'ivory',.19,1.20,.049,q)
+  rod('Crank arm',(-.13,.32,side*.15),(-.13+side*.13,.32-side*.08,side*.15),.016,'metal',q)
+  box('Platform pedal',.12,.041,.14,'dark',-.13+side*.13,.32-side*.08,side*.20,q,bevel=.012)
+ text('Frame decal','BMX',.067,'ivory',.10,.82,.036,q)
  return q
 
 
@@ -468,7 +503,7 @@ def fabrication(p):
  box('Lift side rail',3.0,.035,.045,'metal',0,.17,.56,bay)
  bike=motorcycle(bay,0,0,1.04);bike.location.z=.13
  # A front-wheel chock and rear tie points make the lift a credible work fixture.
- for zz in (-.17,.17):box('Wheel chock',.42,.14,.045,'dark',.94,.23,zz,bay)
+ for zz in (-.17,.17):box('Wheel chock',.42,.14,.045,'dark',1.06,.23,zz,bay)
  for xx in (-1.28,1.28):ring('Lift tie-down',.037,.013,'metal',xx,.18,.48,bay,flat=True)
  c,h,a=character(bay,-.02,-.73,'kneel',0);h.rotation_euler[0]=.16
  rod('Mechanic socket extension',(-.04,-.48,.53),(-.04,-.42,.70),.019,'metal',a[1])
@@ -507,7 +542,7 @@ def family(p):
  dad,h,a=character(repair,-.49,-.58,'kneel-low',0);h.rotation_euler[0]=.16
  ar=a[1];rod('Dad socket handle',(-.04,-.58,.53),(-.04,-.67,.73),.020,'metal',ar)
  ring('Dad socket',.035,.012,'metal',-.04,-.68,.75,ar)
- daughter=family_person(repair,'DAUGHTER',1.35,-.43,.74,False,True);face_toward(daughter,.86,.10)
+ daughter=family_person(repair,'DAUGHTER',1.00,-.30,.74,False,True);face_toward(daughter,.60,.10)
  arm=next(o for o in daughter.children if o.name.startswith('ARM_R'))
  rod('Daughter Allen key',(-.08,-.30,.51),(-.08,-.41,.56),.015,'metal',arm)
  rod('Allen key tip',(-.08,-.41,.56),(-.18,-.41,.56),.015,'metal',arm)
@@ -520,7 +555,7 @@ def family(p):
  rod('Wife screwdriver shaft',(.08,-.18,.51),(.08,.02,.51),.011,'metal',ar)
  # Cradle supports the bottom bracket rather than leaving the bicycle floating.
  box('Repair stand foot',.66,.045,.47,'dark',-.14,.04,-.04,repair)
- for zz in (-.13,.13):rod('Repair cradle',(-.14,.06,zz),(-.14,.43,zz),.022,'dark',repair)
+ for zz in (-.13,.13):rod('Repair cradle',(-.14,.06,zz),(-.14,.29,zz),.022,'dark',repair)
  # Open toolbox is beside Dad's left knee, safely outside the wheel and walk path.
  toolbox=empty('FAMILY_TOOLBOX',-1.57,0,-.12,p,.13)
  box('Toolbox body',.64,.19,.37,'C98F72',0,.12,0,toolbox)
@@ -538,7 +573,7 @@ def family(p):
  d=desk(p,-1.38,-1.86,1.39);pegboard(p,-1.38,1.70,-2.16,1.28,.77)
  tray(d,0,1.145,.02,.53,.30)
  cabinet(p,1.58,-1.91,.78,.79,.49,'829B94')
- ring('Stored BMX tire',.32,.058,'dark',1.58,1.68,-2.13,p)
+ ring('Stored BMX tire',.275,.047,'dark',1.58,1.68,-2.13,p)
  # Pump is parked against the storage cabinet, hose secured to its barrel.
  pump=empty('Parked floor pump',2.02,0,-1.16,p)
  box('Pump foot',.32,.05,.18,'dark',0,.03,0,pump);cylinder('Pump barrel',.047,.66,'metal',0,.37,0,pump)
