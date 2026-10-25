@@ -15,6 +15,26 @@ for(const slug of slugs){
  let meshes=0;gltf.scene.traverse(o=>{if(o.isMesh)meshes++});assert.ok(meshes>70,slug+' has complete geometry');
  assert.ok(named(gltf.scene,'MICHAEL'),slug+' contains Michael');
  if(slug==='family'){assert.ok(gltf.scene.getObjectByName('DAUGHTER'));assert.ok(gltf.scene.getObjectByName('WIFE'));assert.ok(gltf.scene.getObjectByName('BMX_BICYCLE'));assert.ok(gltf.scene.getObjectByName('GARAGE_FRONT'));assert.ok(named(gltf.scene,'Wife_wrench'));gltf.scene.traverse(o=>assert.ok(!/laptop|tablet|sketch|crayon|beanbag/i.test(o.name),'family contains bicycle work, not screens or beanbags'))}
+ // Composition constraints use exported geometry, not authoring coordinates.
+ gltf.scene.updateMatrixWorld(true);
+ gltf.scene.traverse(o=>{if(o.isMesh){
+  const bounds=new Three.Box3().setFromObject(o,true);
+  assert.ok(Math.max(Math.abs(bounds.min.x),Math.abs(bounds.max.x),Math.abs(bounds.min.z),Math.abs(bounds.max.z))<=2.62,slug+': '+o.name+' stays on its square base');
+ }});
+ const point=node=>node.getWorldPosition(new Three.Vector3());
+ if(slug==='photography'){
+  const subject=point(named(gltf.scene,'Product_bottle'));
+  for(const prefix of ['Key_softbox','Fill_softbox','Camera_body']){
+   const fixture=named(gltf.scene,prefix);assert.ok(fixture,prefix+' exists');
+   const direction=new Three.Vector3(0,0,1).applyQuaternion(fixture.getWorldQuaternion(new Three.Quaternion()));
+   const target=subject.clone().sub(point(fixture));
+   if(prefix!=='Camera_body'){direction.y=0;target.y=0;}
+   assert.ok(direction.normalize().dot(target.normalize())>.99,prefix+' aims at the product');
+  }
+ }
+ if(slug==='family'){
+  assert.ok(point(gltf.scene.getObjectByName('Dad_socket')).distanceTo(point(named(gltf.scene,'Chainring')))<.12,'Dad works at the drivetrain, not in empty space');
+ }
  models.push(gltf.scene);console.log(slug+': '+meshes+' meshes, valid character hierarchy');
 }
 let renderedScene,renderedCamera;const scheduled=new Map();let seq=0,time=performance.now();
