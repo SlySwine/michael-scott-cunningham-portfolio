@@ -4,3 +4,7 @@ site/out/
 site/.vinext/
 site/.next/
 site/*.tsbuildinfo
+site/blender/*.blend1
+site/blender/__pycache__/
+docs/dioramas/*.png
+!docs/dioramas/browser-preview.png
