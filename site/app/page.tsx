@@ -31,7 +31,7 @@ export default function Home(){return <>
           </div>
         </div>
 
-        <div className="hero-model"><Diorama initialIndex={2} /></div>
+        <div className="hero-model"><Diorama initialIndex={0} /></div>
       </div>
 
       <div className="snapshot reveal" aria-label="Career summary">
@@ -89,7 +89,7 @@ export default function Home(){return <>
 
     <div className="practice-wrap" id="creative-systems">
       <section className="practice shell">
-        <div className="section-model"><Diorama initialIndex={0} selector={false}/></div>
+        <div className="section-model"><Diorama initialIndex={2} selector={false}/></div>
         <div className="practice-copy reveal">
           <p className="number">02 · Creative systems</p>
           <h2>Make the new thing useful.</h2>
