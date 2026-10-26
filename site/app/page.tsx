@@ -21,12 +21,13 @@ export default function Home(){return <>
       <div className="hero-grid">
         <div className="hero-copy reveal">
           <p className="eyebrow">AI lead · creative systems builder</p>
-          <h1><span>Michael Scott</span><span>Cunningham</span></h1>
+          <h1><span>Michael Scott</span>{' '}<span>Cunningham</span></h1>
           <p className="hero-lede">Turning new technology into useful workflows, memorable experiences, and things people can actually use.</p>
           <p className="hero-copy-secondary">Twenty-plus years across photography, design, production, entrepreneurship, event marketing, and creative operations—now focused on practical AI adoption and building the systems around it.</p>
           <div className="hero-actions">
             <a className="button button-dark" href="#experience">See the work <span aria-hidden="true">↓</span></a>
             <a className="button button-light" href="https://www.linkedin.com/in/michael-scott-cunningham" target="_blank" rel="noreferrer">LinkedIn <span aria-hidden="true">↗</span></a>
+            <a className="button button-light" href="/Michael_Scott_Cunningham_Resume.pdf" target="_blank" rel="noreferrer">Résumé <span aria-hidden="true">↗</span></a>
           </div>
         </div>
 
@@ -161,6 +162,8 @@ export default function Home(){return <>
           <p>AI strategy, creative systems, multimedia, live experiences, product experiments, or the messy problem connecting all of them.</p>
         </div>
         <div className="contact-links">
+          <a href="mailto:fugi9963@gmail.com"><span>Email</span><span aria-hidden="true">↗</span></a>
+          <a href="/Michael_Scott_Cunningham_Resume.pdf" target="_blank" rel="noreferrer"><span>Résumé</span><span aria-hidden="true">↗</span></a>
           <a href="https://www.linkedin.com/in/michael-scott-cunningham" target="_blank" rel="noreferrer"><span>LinkedIn</span><span aria-hidden="true">↗</span></a>
           <a href="https://github.com/SlySwine" target="_blank" rel="noreferrer"><span>GitHub</span><span aria-hidden="true">↗</span></a>
           <a href="https://x.com/SlySwine" target="_blank" rel="noreferrer"><span>X</span><span aria-hidden="true">↗</span></a>
