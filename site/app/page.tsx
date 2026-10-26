@@ -23,7 +23,7 @@ export default function Home(){return <>
           <p className="eyebrow">AI lead · creative systems builder</p>
           <h1><span>Michael Scott</span>{' '}<span>Cunningham</span></h1>
           <p className="hero-lede">Turning new technology into useful workflows, memorable experiences, and things people can actually use.</p>
-          <p className="hero-copy-secondary">Twenty-plus years across photography, design, production, entrepreneurship, event marketing, and creative operations—now focused on practical AI adoption and building the systems around it.</p>
+          <p className="hero-copy-secondary">Twenty-plus years across photography, design, production, entrepreneurship, event marketing, and creative operations, now focused on practical AI adoption and building the systems around it.</p>
           <div className="hero-actions">
             <a className="button button-dark" href="#experience">See the work</a>
             <a className="button button-light" href="https://www.linkedin.com/in/michael-scott-cunningham" target="_blank" rel="noreferrer">LinkedIn</a>
@@ -63,25 +63,25 @@ export default function Home(){return <>
         <article className="experience-row reveal">
           <h3>Event & Creative Marketing Manager / AI Lead</h3>
           <div className="company">Mi-One Brands</div>
-          <time dateTime="2022-10">Oct 2022 — present</time>
+          <time dateTime="2022-10">Oct 2022 to present</time>
           <p className="desc">Leading practical AI adoption while directing multimedia, events, sales-enablement materials, production systems, and cross-functional creative execution.</p>
         </article>
         <article className="experience-row reveal">
           <h3>Brand & Image Specialist</h3>
           <div className="company">Trask Performance</div>
-          <time dateTime="2020-02/2022-08">Feb 2020 — Aug 2022</time>
+          <time dateTime="2020-02/2022-08">Feb 2020 to Aug 2022</time>
           <p className="desc">Owned photography, video, graphics, social content, and event presence for a performance-motorcycle brand.</p>
         </article>
         <article className="experience-row reveal">
           <h3>Founder / Creative Director</h3>
           <div className="company">HeadKace Motorcycle</div>
-          <time dateTime="2013-10/2019-08">Oct 2013 — Aug 2019</time>
+          <time dateTime="2013-10/2019-08">Oct 2013 to Aug 2019</time>
           <p className="desc">Built a motorcycle business from the ground up across fabrication, brand, sales, operations, vendors, and customer experience.</p>
         </article>
         <article className="experience-row reveal">
           <h3>Owner / Commercial Photographer</h3>
           <div className="company">Michael Scott Photography</div>
-          <time dateTime="2007-08/2013-10">Aug 2007 — Oct 2013</time>
+          <time dateTime="2007-08/2013-10">Aug 2007 to Oct 2013</time>
           <p className="desc">Commercial photography and production from preproduction and lighting through capture, retouching, design, and final delivery.</p>
         </article>
       </div>
