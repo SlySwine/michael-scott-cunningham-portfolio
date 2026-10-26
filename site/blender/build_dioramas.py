@@ -70,16 +70,22 @@ def camera(parent,x,y,z,s=1):
  sphere('Shutter',.02,'metal',.14,.15,.02,p);return p
 
 def character(parent,x=0,z=0,pose='stand',rot=0):
- root=empty('MICHAEL',x,0,z,parent,rot);seated=pose in ('desk','ride','family');hip=.73 if seated else (.35 if pose=='kneel-low' else .48 if pose=='kneel' else .92)
+ root=empty('MICHAEL',x,0,z,parent,rot);seated=pose in ('desk','ride','family');hip=.75 if seated else (.35 if pose=='kneel-low' else .48 if pose=='kneel' else .92)
  box('Hips',.43,.21,.31,'pants',0,hip,0,root,bevel=.07)
  for side in (-1,1):
   sx=side*.14
   if pose in ('kneel','kneel-low'):
-   knee=(sx,.15,-.21) if side==-1 else (sx,.42,.35)
-   ankle=(sx,.12,-.50) if side==-1 else (sx,.13,.38)
+   # Trailing leg: knee on the floor, shin along the ground, top of the foot flat behind with the sole facing up.
+   knee=(sx,.10,-.21) if side==-1 else (sx,.42,.35)
+   ankle=(sx,.14,-.49) if side==-1 else (sx,.13,.38)
    rod('Kneeling thigh',(sx,hip,0),knee,.098,'pants',root);rod('Kneeling shin',knee,ankle,.084,'pants',root);footz=ankle[2]+.08
+   if side==-1:
+    foot=empty('Trailing back foot',sx,.105,-.66,root);foot.rotation_euler[0]=3.0
+    box('Boot',.215,.16,.36,'boot',0,0,0,foot,bevel=.055);box('Sole',.222,.044,.37,'sole',0,-.067,0,foot,bevel=.015)
+    for j in range(3):box('Boot laces',.115,.012,.015,'BCA98D',0,.08,-.01+j*.04,foot,bevel=.003)
+    continue
   elif seated:
-   rod('Thigh',(sx,hip,0),(sx,.48,.36),.098,'pants',root);rod('Shin',(sx,.48,.36),(sx,.16,.36),.084,'pants',root);footz=.45
+   rod('Thigh',(sx,hip,0),(sx,.735,.40),.098,'pants',root);rod('Shin',(sx,.735,.40),(sx,.17,.50),.084,'pants',root);footz=.58
   else:
    rod('Trouser leg',(sx,hip,0),(sx,.16,.015),.101,'pants',root);footz=.08
   box('Boot',.215,.16,.36,'boot',sx,.13,footz,root,bevel=.055);box('Sole',.222,.044,.37,'sole',sx,.063,footz,root,bevel=.015)
@@ -101,18 +107,25 @@ def character(parent,x=0,z=0,pose='stand',rot=0):
  sphere('Hair cap',.29,'hair',0,.185,-.048,head,scale=(1,.65,.88))
  for i in range(6):
   o=sphere('Swept hair',.102,['hair','6B5747','7B6756'][i%3],-.185+i*.072,.275+i*.009,-.04,head,scale=(.69,.78,1.7));o.rotation_euler[1]=-.35
+ # Features sit on the face sphere's real surface, so nothing hovers in front of it.
+ def skin(x,y):return .286*.92*math.sqrt(max(0,1-(x/.286)**2-((y-.012)/(.286*1.15))**2))
+ inner=[]
  for side in (-1,1):
-  xx=side*.129
-  sphere('Eye white',.040,'F1E8DC',xx,.052,.248,head,scale=(1,.71,.25));sphere('Eye',.023,'35474E',xx,.052,.263,head,scale=(.8,1,.38));sphere('Eye catchlight',.007,'FFFFFF',xx-.004,.06,.272,head)
-  box('Blue pearl glasses top',.199,.026,.028,'blue',xx,.112,.263,head,bevel=.01);box('Blue pearl glasses bottom',.199,.026,.028,'blue',xx,-.005,.269,head,bevel=.01)
-  for k in (-1,1):box('Glasses rim',.027,.126,.028,'blue',xx+k*.089,.055,.267,head,bevel=.01)
-  rod('Glasses temple',(side*.223,.08,.25),(side*.263,.065,-.083),.014,'blue',head)
-  brow=box('Brow',.11,.025,.018,'hair',xx,.145,.247,head,bevel=.012);brow.rotation_euler[1]=side*.06
- box('Glasses bridge',.08,.018,.023,'blue',0,.073,.279,head,bevel=.006);sphere('Nose',.058,'skin',0,.015,.278,head,scale=(.66,.88,1.07))
+  xx=side*.129;d=skin(xx,.052)
+  sphere('Eye white',.040,'F1E8DC',xx,.052,d+.002,head,scale=(1,.71,.25));sphere('Eye',.023,'35474E',xx,.052,d+.009,head,scale=(.8,1,.38));sphere('Eye catchlight',.007,'FFFFFF',xx-.004,.06,d+.016,head)
+  # Each lens is a small frame tilted to follow the cheek, resting just proud of the eye.
+  tilt=math.atan2(skin(side*.05,.055)-skin(side*.21,.055),.16);lens_d=skin(xx,.055)+.034
+  lens=empty('Glasses lens',xx,.055,lens_d,head,side*tilt)
+  box('Blue pearl glasses top',.17,.024,.024,'blue',0,.05,0,lens,bevel=.009);box('Blue pearl glasses bottom',.17,.024,.024,'blue',0,-.05,0,lens,bevel=.009)
+  for k in (-1,1):box('Glasses rim',.024,.124,.024,'blue',k*.081,0,0,lens,bevel=.009)
+  ox=xx+side*.081*math.cos(tilt);od=lens_d-.081*math.sin(tilt);inner.append(lens_d+.081*math.sin(tilt))
+  rod('Glasses temple',(ox+side*.008,.075,od-.01),(side*.283,.066,-.02),.012,'blue',head)
+  brow=box('Brow',.11,.025,.018,'hair',xx,.145,skin(xx,.145)+.01,head,bevel=.012);brow.rotation_euler[1]=side*.06;brow.rotation_euler[2]=side*tilt
+ box('Glasses bridge',.08,.018,.022,'blue',0,.072,max(inner),head,bevel=.006);sphere('Nose',.058,'skin',0,.015,.278,head,scale=(.66,.88,1.07))
  arms=[]
  for side in (-1,1):
   ar=empty('ARM_R' if side==1 else 'ARM_L',side*.34,.54,0,body);elbow=(side*.05,-.27,.055);hand=(side*.055,-.54,.09)
-  if pose in ('desk','family'):elbow=(side*.06,-.26,.24);hand=(side*.01,-.22,.53)
+  if pose in ('desk','family'):elbow=(side*.07,-.15,.26);hand=(side*.02,-.13,.55)
   if pose in ('kneel','kneel-low'):elbow=(side*.025,-.30,.22);hand=(-side*.04,-.58 if pose=='kneel-low' else -.48,.53)
   if pose=='photo':elbow=(side*.15,-.02,.27);hand=(-side*.11,.36,.38)
   if pose=='ride':elbow=(side*.06,-.29,.42);hand=(side*.03,-.32,.94)
@@ -196,7 +209,7 @@ def motorcycle(parent,x=0,z=0,s=1):
  for zz in (-.34,.34):rod('Grip',(.40,1.40,zz),(.27,1.39,zz),.032,'dark',p)
  lamp=cylinder('Round headlight housing',.13,.18,'metal',.77,1.17,0,p);lamp.rotation_euler[1]=math.pi/2
  glass=cylinder('Round headlight',.112,.012,'F5E4BA',.865,1.17,0,p);glass.rotation_euler[1]=math.pi/2
- for zz in (-.29,.29):rod('Foot peg',(-.17,.43,zz),(-.17,.43,zz*1.4),.028,'dark',p)
+ for zz in (-.15,.15):rod('Foot peg',(-.17,.45,zz),(-.17,.45,zz*2.6),.028,'dark',p)
  sphere('Tail light',.045,'B86253',-1.25,.89,0,p)
  return p
 
@@ -224,7 +237,7 @@ def family_person(p,name,x,z,scale=.7,seated=True,working=False):
  sphere('Hair crown',.27,'655047',0,.17,-.048,head,scale=(1,.64,.95))
  for side in (-1,1):
   sphere('Hair side',.09,'655047',side*.235,-.04,-.055,head,scale=(.65,2.2,.8))
-  sphere('Eye',.024,'dark',side*.105,.025,.242,head,scale=(.8,1,.3))
+  sphere('Eye',.024,'dark',side*.105,.025,.01+.26*.91*math.sqrt(1-(.105/.26)**2-(.025/.286)**2)+.004,head,scale=(.8,1,.3))
  sphere('Nose',.044,'skin',0,-.023,.258,head)
  box('Smile',.072,.013,.009,'81574E',0,-.092,.243,head,bevel=.005)
  if name=='DAUGHTER':
@@ -262,13 +275,14 @@ def bmx(p,x=0,z=0):
  for side in (-1,1):
   rod('BMX bar rise',(.44,.97,side*.12),(.39,1.17,side*.22),.020,'metal',q)
   rod('BMX grips',(.39,1.17,side*.21),(.36,1.17,side*.35),.028,'dark',q)
- ring('Chainring',.09,.014,'metal',-.13,.32,.14,q)
- ring('Rear sprocket',.037,.010,'metal',-.73,.365,.14,q)
- rod('Top chain run',(-.13,.41,.14),(-.73,.402,.14),.009,'dark',q)
- rod('Lower chain run',(-.13,.23,.14),(-.73,.328,.14),.009,'dark',q)
+ # Drivetrain faces Dad, who kneels on this side of the bike.
+ ring('Chainring',.09,.014,'metal',-.13,.32,-.14,q)
+ ring('Rear sprocket',.037,.010,'metal',-.73,.365,-.14,q)
+ rod('Top chain run',(-.13,.41,-.14),(-.73,.402,-.14),.009,'dark',q)
+ rod('Lower chain run',(-.13,.23,-.14),(-.73,.328,-.14),.009,'dark',q)
  for side in (-1,1):
-  rod('Crank arm',(-.13,.32,side*.15),(-.13+side*.13,.32-side*.08,side*.15),.016,'metal',q)
-  box('Platform pedal',.12,.041,.14,'dark',-.13+side*.13,.32-side*.08,side*.20,q,bevel=.012)
+  rod('Crank arm',(-.13,.32,side*.15),(-.13-side*.13,.32+side*.08,side*.15),.016,'metal',q)
+  box('Platform pedal',.12,.041,.14,'dark',-.13-side*.13,.32+side*.08,side*.20,q,bevel=.012)
  text('Frame decal','BMX',.067,'ivory',.10,.82,.036,q)
  return q
 
@@ -397,8 +411,7 @@ def photo(p):
   ring('Lens focus ring',.096,.012,'metal',xx,1.11,0,cart,flat=True)
  box('Folded microfiber',.24,.025,.17,'ivory',.27,.985,.15,cart)
  # Marks describe real operator/subject positions without adding scene titles.
- for xx in (-.65,-.38):box('Photographer tape mark',.15,.005,.028,'ivory',xx,.008,1.32,shoot)
- cable('Lighting cable',[(-1.63,.025,-.23),(-1.70,.025,-.60),(-1.30,.025,-1.84),(1.30,.025,-1.84),(1.55,.025,-.67)],shoot,.012)
+ cable('Lighting cable',[(-1.63,.025,-.23),(-1.66,.025,-1.10),(-1.40,.025,-2.08),(1.20,.025,-2.08),(1.55,.025,-1.30),(1.55,.025,-.67)],shoot,.012)
  return c,h,a
 
 def graphic_arts(p):
@@ -432,8 +445,8 @@ def graphic_arts(p):
   paper=empty('MOTION_paper',-.51+i*.51,1.72,0,rack)
   box('Art paper',.43,.59,.013,'ivory',parent=paper)
   box('Wooden clip',.032,.08,.035,'wood',0,.30,.018,paper)
-  sphere('Printed circle',.13,['C97C61','698F9A','C1A35A'][i],0,.07,.014,paper,scale=(1,1,.04))
-  box('Printed bar',.29,.065,.007,'394C62',0,-.14,.026,paper,bevel=.003)
+  sphere('Printed circle',.13,['C97C61','698F9A','C1A35A'][i],0,.07,.0075,paper,scale=(1,1,.03))
+  box('Printed bar',.29,.065,.004,'394C62',0,-.14,.0085,paper,bevel=.0015)
  # Press and paper rolls form one finishing station; open floor remains in front.
  station=empty('FINISHING_STATION',1.72,0,-.12,p,-.20)
  t=desk(station,0,0,.95)
@@ -445,20 +458,25 @@ def graphic_arts(p):
  cylinder('Roll stock bin',.24,.40,'clay',.03,.21,-.81,station)
  for i in range(3):cylinder('Rolled stock',.064,.84+i*.10,'ivory',-.12+i*.13,.46+i*.05,-.81,station)
  easel=empty('FINISHED_POSTER',1.43,0,-1.86,p,-.18)
- for xx in (-.40,.40):rod('Easel front leg',(xx,.02,.18),(xx*.65,2.16,0),.03,'wood',easel)
- rod('Easel back leg',(0,.02,-.35),(0,2.16,0),.03,'wood',easel)
- box('Poster board',.96,1.30,.05,'ivory',0,1.48,.04,easel)
- sphere('Poster sun',.28,'C97C61',0,1.68,.079,easel,scale=(1,1,.06))
- for i in range(4):box('Poster wave',.69,.065,.01,'698F9A',0,1.04+i*.11,.09,easel,bevel=.024)
- text('Poster title','IN GOOD\nCOMPANY',.12,'dark',0,1.66,.11,easel)
+ # The board leans on the front legs and rests on a ledge, instead of the legs passing through it.
+ lean=math.atan2(.18,2.10)
+ for xx in (-.40,.40):rod('Easel front leg',(xx,.02,.18),(xx*.72,2.08,-.0),.03,'wood',easel)
+ rod('Easel back leg',(0,.02,-.42),(0,2.02,-.02),.03,'wood',easel)
+ box('Easel ledge',.98,.045,.12,'wood',0,.86,.16,easel,bevel=.012)
+ board=empty('Poster on easel',0,.89,.17,easel);board.rotation_euler[0]=-lean
+ box('Poster board',.96,1.30,.05,'ivory',0,.65,0,board)
+ text('Poster title','IN GOOD COMPANY',.085,'dark',0,1.18,.03,board)
+ sphere('Poster sun',.24,'C97C61',0,.80,.028,board,scale=(1,1,.04))
+ for i in range(3):box('Poster wave',.62,.055,.008,'698F9A',0,.24+i*.10,.029,board,bevel=.02)
  return c,h,a
 
 def events(p):
  stage=empty('STAGE_ASSEMBLY',.25,0,-1.07,p)
  box('Stage deck',3.50,.24,1.78,'666B8C',0,.13,0,stage)
  box('Stage fascia',3.50,.13,.045,'5C547A',0,.11,.90,stage)
- box('Event graphic',2.70,1.48,.07,'5C547A',0,1.13,-.79,stage)
- text('Event title','MAKE IT\nHAPPEN',.27,'F2E3CE',0,1.20,-.744,stage)
+ box('Event graphic',2.70,1.48,.07,'5C547A',0,.99,-.79,stage)
+ for xx in (-1.15,1.15):box('Backdrop foot',.10,.04,.42,'metal',xx,.27,-.79,stage,bevel=.01)
+ text('Event title','MAKE IT\nHAPPEN',.27,'F2E3CE',0,1.06,-.744,stage)
  for xx in (-1.97,1.97):
   box('Truss baseplate',.38,.035,.42,'metal',xx,.018,-.75,stage)
   for zz in (-.87,-.64):rod('Truss upright',(xx,.04,zz),(xx,2.71,zz),.030,'metal',stage)
@@ -485,8 +503,8 @@ def events(p):
  box('Mixing console',1.02,.09,.66,'58616A',0,.95,0,tech)
  for i in range(7):
   xx=-.36+i*.12;box('Fader slot',.01,.007,.25,'metal',xx,1.002,.05,tech)
-  box('Fader cap',.04,.018,.05,'ivory',xx,1.02,(i%3)*.07-.06,tech)
-  for zz in (-.19,-.12):cylinder('Mixer knob',.018,.026,'metal',xx,1.02,zz,tech)
+  box('Fader cap',.04,.018,.05,'ivory',xx,1.006,(i%3)*.07-.06,tech)
+  for zz in (-.19,-.12):cylinder('Mixer knob',.018,.026,'metal',xx,1.008,zz,tech)
  box('Console meter',.22,.008,.095,'9BB8D1',.33,1.002,-.22,tech)
  for xx in (-.43,.43):
   for zz in (-.26,.26):sphere('Roadcase wheel',.075,'dark',xx,.075,zz,tech)
@@ -499,13 +517,13 @@ def events(p):
 
 def fabrication(p):
  bay=empty('MOTORCYCLE_SERVICE_BAY',.24,0,.40,p,-.17)
- box('Motorcycle lift',3.05,.15,1.17,'6E827B',0,.085,0,bay)
+ box('Motorcycle lift',3.05,.15,.85,'6E827B',0,.085,.16,bay)
  box('Lift side rail',3.0,.035,.045,'metal',0,.17,.56,bay)
  bike=motorcycle(bay,0,0,1.04);bike.location.z=.13
  # A front-wheel chock and rear tie points make the lift a credible work fixture.
  for zz in (-.17,.17):box('Wheel chock',.42,.14,.045,'dark',1.06,.23,zz,bay)
  for xx in (-1.28,1.28):ring('Lift tie-down',.037,.013,'metal',xx,.18,.48,bay,flat=True)
- c,h,a=character(bay,-.02,-.73,'kneel',0);h.rotation_euler[0]=.16
+ c,h,a=character(bay,-.02,-.93,'kneel',0);h.rotation_euler[0]=.16
  rod('Mechanic socket extension',(-.04,-.48,.53),(-.04,-.42,.70),.019,'metal',a[1])
  # Back bench, storage, vise and tools occupy one continuous wall-free workshop edge.
  bench=empty('SERVICE_BENCH',-.28,0,-1.94,p)
@@ -526,7 +544,7 @@ def fabrication(p):
  tools=tray(cart,0,.86,0,.53,.34)
  for xx in (-.16,0,.16):rod('Ready socket tool',(xx,.04,-.10),(xx,.04,.10),.018,'metal',tools)
  # Spare tire and stool are stored at the rear service edge.
- ring('Spare tire',.32,.085,'dark',1.68,.40,-1.9,p)
+ spare=ring('Spare tire',.32,.085,'dark',1.72,.445,-1.94,p);spare.rotation_euler=(math.pi/2,-.10,math.pi/2)
  stool=empty('Mechanic stool',-1.93,0,.67,p)
  cylinder('Stool seat',.24,.08,'boot',0,.50,0,stool)
  for i in range(3):
@@ -539,7 +557,7 @@ def family(p):
  # Bicycle, people and tools are arranged around the drivetrain and front wheel.
  repair=empty('FAMILY_REPAIR',-.18,0,.55,p,-.10)
  bike=bmx(repair,0,0)
- dad,h,a=character(repair,-.49,-.58,'kneel-low',0);h.rotation_euler[0]=.16
+ dad,h,a=character(repair,-.49,-.95,'kneel-low',0);h.rotation_euler[0]=.16
  ar=a[1];rod('Dad socket handle',(-.04,-.58,.53),(-.04,-.67,.73),.020,'metal',ar)
  ring('Dad socket',.035,.012,'metal',-.04,-.68,.75,ar)
  daughter=family_person(repair,'DAUGHTER',1.00,-.30,.74,False,True);face_toward(daughter,.60,.10)
@@ -564,16 +582,16 @@ def family(p):
  for i in range(3):rod('Sorted spare tool',(-.19+i*.18,.25,-.09),(-.19+i*.18,.25,.09),.014,'metal',toolbox)
  # Garage frontage frames the family, with the door raised above their heads.
  garage=empty('GARAGE_FRONT',0,0,-2.28,p)
- box('Garage interior',4.65,2.64,.07,'66757A',0,1.32,-.07,garage)
+ box('Garage interior',4.65,2.64,.07,'66757A',0,1.32,-.06,garage)
  for xx in (-2.33,2.33):box('Garage pier',.25,2.73,.28,'E6DED0',xx,1.37,.05,garage)
- box('Garage lintel',4.91,.22,.29,'E6DED0',0,2.70,.05,garage)
+ box('Garage lintel',4.97,.22,.30,'E6DED0',0,2.70,.05,garage)
  box('Garage top trim',4.99,.07,.32,'B2B0A5',0,2.84,.05,garage)
  for i in range(3):box('Raised garage slat',4.37,.16,.055,'CBCFC8',0,2.22+i*.17,.13,garage)
  for xx in (-2.20,2.20):box('Door track',.045,2.5,.055,'metal',xx,1.28,.11,garage)
- d=desk(p,-1.38,-1.86,1.39);pegboard(p,-1.38,1.70,-2.16,1.28,.77)
+ d=desk(p,-1.38,-1.79,1.39);pegboard(p,-1.38,1.70,-2.278,1.28,.77)
  tray(d,0,1.145,.02,.53,.30)
  cabinet(p,1.58,-1.91,.78,.79,.49,'829B94')
- ring('Stored BMX tire',.275,.047,'dark',1.58,1.68,-2.13,p)
+ ring('Stored BMX tire',.275,.047,'dark',1.58,1.68,-2.255,p);rod('Tire hook',(1.58,1.93,-2.32),(1.58,1.93,-2.22),.016,'metal',p)
  # Pump is parked against the storage cabinet, hose secured to its barrel.
  pump=empty('Parked floor pump',2.02,0,-1.16,p)
  box('Pump foot',.32,.05,.18,'dark',0,.03,0,pump);cylinder('Pump barrel',.047,.66,'metal',0,.37,0,pump)
@@ -609,7 +627,7 @@ def main():
   if opts.scene and opts.scene!=slug:continue
   print('BUILDING',slug,flush=True);scene=setup_scene(slug,opts.resolution,opts.samples)
   root=empty('DIORAMA_'+slug);base(root,col);builder(root)
-  root['environment']=slug;root['authored_in']='Blender';root['composition_revision']='purposeful-workspaces-v2'
+  root['environment']=slug;root['authored_in']='Blender';root['composition_revision']='purposeful-workspaces-v3'
   bpy.ops.object.select_all(action='DESELECT')
   for obj in list(scene.objects):
    if obj.type in {'FONT','CURVE'}:
