@@ -75,9 +75,15 @@ def character(parent,x=0,z=0,pose='stand',rot=0):
  for side in (-1,1):
   sx=side*.14
   if pose in ('kneel','kneel-low'):
-   knee=(sx,.15,-.21) if side==-1 else (sx,.42,.35)
-   ankle=(sx,.12,-.50) if side==-1 else (sx,.13,.38)
+   # Trailing leg: knee on the floor, shin along the ground, top of the foot flat behind with the sole facing up.
+   knee=(sx,.10,-.21) if side==-1 else (sx,.42,.35)
+   ankle=(sx,.14,-.49) if side==-1 else (sx,.13,.38)
    rod('Kneeling thigh',(sx,hip,0),knee,.098,'pants',root);rod('Kneeling shin',knee,ankle,.084,'pants',root);footz=ankle[2]+.08
+   if side==-1:
+    foot=empty('Trailing back foot',sx,.105,-.66,root);foot.rotation_euler[0]=3.0
+    box('Boot',.215,.16,.36,'boot',0,0,0,foot,bevel=.055);box('Sole',.222,.044,.37,'sole',0,-.067,0,foot,bevel=.015)
+    for j in range(3):box('Boot laces',.115,.012,.015,'BCA98D',0,.08,-.01+j*.04,foot,bevel=.003)
+    continue
   elif seated:
    rod('Thigh',(sx,hip,0),(sx,.735,.40),.098,'pants',root);rod('Shin',(sx,.735,.40),(sx,.17,.50),.084,'pants',root);footz=.58
   else:
