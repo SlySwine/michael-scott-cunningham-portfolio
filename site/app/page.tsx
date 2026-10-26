@@ -25,13 +25,13 @@ export default function Home(){return <>
           <p className="hero-lede">Turning new technology into useful workflows, memorable experiences, and things people can actually use.</p>
           <p className="hero-copy-secondary">Twenty-plus years across photography, design, production, entrepreneurship, event marketing, and creative operations—now focused on practical AI adoption and building the systems around it.</p>
           <div className="hero-actions">
-            <a className="button button-dark" href="#experience">See the work <span aria-hidden="true">↓</span></a>
-            <a className="button button-light" href="https://www.linkedin.com/in/michael-scott-cunningham" target="_blank" rel="noreferrer">LinkedIn <span aria-hidden="true">↗</span></a>
-            <a className="button button-light" href="/Michael_Scott_Cunningham_Resume.pdf" target="_blank" rel="noreferrer">Résumé <span aria-hidden="true">↗</span></a>
+            <a className="button button-dark" href="#experience">See the work</a>
+            <a className="button button-light" href="https://www.linkedin.com/in/michael-scott-cunningham" target="_blank" rel="noreferrer">LinkedIn</a>
+            <a className="button button-light" href="/Michael_Scott_Cunningham_Resume.pdf" target="_blank" rel="noreferrer">Résumé</a>
           </div>
         </div>
 
-        <div className="hero-model"><Diorama /></div>
+        <div className="hero-model"><Diorama initialIndex={2} /></div>
       </div>
 
       <div className="snapshot reveal" aria-label="Career summary">
@@ -65,28 +65,24 @@ export default function Home(){return <>
           <div className="company">Mi-One Brands</div>
           <time dateTime="2022-10">Oct 2022 — present</time>
           <p className="desc">Leading practical AI adoption while directing multimedia, events, sales-enablement materials, production systems, and cross-functional creative execution.</p>
-          <span className="arrow" aria-hidden="true">↗</span>
         </article>
         <article className="experience-row reveal">
           <h3>Brand & Image Specialist</h3>
           <div className="company">Trask Performance</div>
           <time dateTime="2020-02/2022-08">Feb 2020 — Aug 2022</time>
           <p className="desc">Owned photography, video, graphics, social content, and event presence for a performance-motorcycle brand.</p>
-          <span className="arrow" aria-hidden="true">↗</span>
         </article>
         <article className="experience-row reveal">
           <h3>Founder / Creative Director</h3>
           <div className="company">HeadKace Motorcycle</div>
           <time dateTime="2013-10/2019-08">Oct 2013 — Aug 2019</time>
           <p className="desc">Built a motorcycle business from the ground up across fabrication, brand, sales, operations, vendors, and customer experience.</p>
-          <span className="arrow" aria-hidden="true">↗</span>
         </article>
         <article className="experience-row reveal">
           <h3>Owner / Commercial Photographer</h3>
           <div className="company">Michael Scott Photography</div>
           <time dateTime="2007-08/2013-10">Aug 2007 — Oct 2013</time>
           <p className="desc">Commercial photography and production from preproduction and lighting through capture, retouching, design, and final delivery.</p>
-          <span className="arrow" aria-hidden="true">↗</span>
         </article>
       </div>
     </section>
@@ -144,8 +140,8 @@ export default function Home(){return <>
           <div className="selected">
             <strong>Current experiments</strong>
             <ul>
-              <li>Sly Swine Moto Gear</li>
-              <li>Motorcycle ride tracker</li>
+              <li><a href="https://slyswine.com" target="_blank" rel="noreferrer">Sly Swine Moto Gear</a></li>
+              <li>Family recipe box</li>
               <li>Real-time usage tools</li>
               <li>AI-assisted creative systems</li>
             </ul>
@@ -162,12 +158,12 @@ export default function Home(){return <>
           <p>AI strategy, creative systems, multimedia, live experiences, product experiments, or the messy problem connecting all of them.</p>
         </div>
         <div className="contact-links">
-          <a href="mailto:fugi9963@gmail.com"><span>Email</span><span aria-hidden="true">↗</span></a>
-          <a href="/Michael_Scott_Cunningham_Resume.pdf" target="_blank" rel="noreferrer"><span>Résumé</span><span aria-hidden="true">↗</span></a>
-          <a href="https://www.linkedin.com/in/michael-scott-cunningham" target="_blank" rel="noreferrer"><span>LinkedIn</span><span aria-hidden="true">↗</span></a>
-          <a href="https://github.com/SlySwine" target="_blank" rel="noreferrer"><span>GitHub</span><span aria-hidden="true">↗</span></a>
-          <a href="https://x.com/SlySwine" target="_blank" rel="noreferrer"><span>X</span><span aria-hidden="true">↗</span></a>
-          <a href="https://www.instagram.com/slyswinemoto/" target="_blank" rel="noreferrer"><span>Instagram</span><span aria-hidden="true">↗</span></a>
+          <a href="mailto:fugi9963@gmail.com"><span>Email</span></a>
+          <a href="/Michael_Scott_Cunningham_Resume.pdf" target="_blank" rel="noreferrer"><span>Résumé</span></a>
+          <a href="https://www.linkedin.com/in/michael-scott-cunningham" target="_blank" rel="noreferrer"><span>LinkedIn</span></a>
+          <a href="https://github.com/SlySwine" target="_blank" rel="noreferrer"><span>GitHub</span></a>
+          <a href="https://x.com/SlySwine" target="_blank" rel="noreferrer"><span>X</span></a>
+          <a href="https://www.instagram.com/slyswinemoto/" target="_blank" rel="noreferrer"><span>Instagram</span></a>
         </div>
       </div>
       <footer className="footer">
