@@ -5,7 +5,7 @@ import fs from 'node:fs/promises';
 import * as Three from 'three';
 import {GLTFLoader as RealLoader} from 'three/addons/loaders/GLTFLoader.js';
 import ts from 'typescript';
-const slugs=['ai','photography','graphic-arts','events','fabrication','family'];
+const slugs=['graphic-arts','photography','ai','events','fabrication','family'];
 const models=[];
 const named=(root,prefix)=>{let found;root.traverse(o=>{if(o.name.startsWith(prefix))found??=o});return found};
 for(const slug of slugs){
