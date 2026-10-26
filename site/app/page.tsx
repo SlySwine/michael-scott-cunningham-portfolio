@@ -145,7 +145,7 @@ export default function Home(){return <>
             <strong>Current experiments</strong>
             <ul>
               <li><a href="https://slyswine.com" target="_blank" rel="noreferrer">Sly Swine Moto Gear <span aria-hidden="true">↗</span></a></li>
-              <li>Motorcycle ride tracker</li>
+              <li>Family recipe box</li>
               <li>Real-time usage tools</li>
               <li>AI-assisted creative systems</li>
             </ul>
