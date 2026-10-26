@@ -269,10 +269,11 @@ def bmx(p,x=0,z=0):
  for side in (-1,1):
   rod('BMX bar rise',(.44,.97,side*.12),(.39,1.17,side*.22),.020,'metal',q)
   rod('BMX grips',(.39,1.17,side*.21),(.36,1.17,side*.35),.028,'dark',q)
- ring('Chainring',.09,.014,'metal',-.13,.32,.14,q)
- ring('Rear sprocket',.037,.010,'metal',-.73,.365,.14,q)
- rod('Top chain run',(-.13,.41,.14),(-.73,.402,.14),.009,'dark',q)
- rod('Lower chain run',(-.13,.23,.14),(-.73,.328,.14),.009,'dark',q)
+ # Drivetrain faces Dad, who kneels on this side of the bike.
+ ring('Chainring',.09,.014,'metal',-.13,.32,-.14,q)
+ ring('Rear sprocket',.037,.010,'metal',-.73,.365,-.14,q)
+ rod('Top chain run',(-.13,.41,-.14),(-.73,.402,-.14),.009,'dark',q)
+ rod('Lower chain run',(-.13,.23,-.14),(-.73,.328,-.14),.009,'dark',q)
  for side in (-1,1):
   rod('Crank arm',(-.13,.32,side*.15),(-.13-side*.13,.32+side*.08,side*.15),.016,'metal',q)
   box('Platform pedal',.12,.041,.14,'dark',-.13-side*.13,.32+side*.08,side*.20,q,bevel=.012)
