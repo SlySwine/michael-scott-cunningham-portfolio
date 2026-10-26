@@ -31,7 +31,7 @@ export default function Home(){return <>
           </div>
         </div>
 
-        <div className="hero-model"><Diorama /></div>
+        <div className="hero-model"><Diorama initialIndex={2} /></div>
       </div>
 
       <div className="snapshot reveal" aria-label="Career summary">
@@ -144,7 +144,7 @@ export default function Home(){return <>
           <div className="selected">
             <strong>Current experiments</strong>
             <ul>
-              <li>Sly Swine Moto Gear</li>
+              <li><a href="https://slyswine.com" target="_blank" rel="noreferrer">Sly Swine Moto Gear <span aria-hidden="true">↗</span></a></li>
               <li>Motorcycle ride tracker</li>
               <li>Real-time usage tools</li>
               <li>AI-assisted creative systems</li>
