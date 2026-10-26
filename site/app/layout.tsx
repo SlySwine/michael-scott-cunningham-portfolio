@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import './globals.css';
 export const metadata: Metadata = {
-  title: 'Michael Scott Cunningham — AI Lead & Creative Systems Builder',
+  title: 'Michael Scott Cunningham | AI Lead & Creative Systems Builder',
   description: 'Michael Scott Cunningham is an AI lead and creative systems builder working across AI adoption, multimedia, live experiences, and practical product experiments.',
   robots: { index: true, follow: true },
   alternates: { canonical: 'https://michaelscott.me/' },
-  openGraph: { title: 'Michael Scott Cunningham — AI Lead & Creative Systems Builder', description: 'Turning new technology into useful workflows, memorable experiences, and things people can actually use.', type: 'website', url: 'https://michaelscott.me/', images: [{ url: 'https://michaelscott.me/og-image.png', width: 1200, height: 630, alt: 'Michael Scott Cunningham — AI lead and creative systems builder, Phoenix, Arizona' }] },
-  twitter: { card: 'summary_large_image', title: 'Michael Scott Cunningham — AI Lead & Creative Systems Builder', description: 'Turning new technology into useful workflows, memorable experiences, and things people can actually use.', images: ['https://michaelscott.me/og-image.png'] },
+  openGraph: { title: 'Michael Scott Cunningham | AI Lead & Creative Systems Builder', description: 'Turning new technology into useful workflows, memorable experiences, and things people can actually use.', type: 'website', url: 'https://michaelscott.me/', images: [{ url: 'https://michaelscott.me/og-image.png', width: 1200, height: 630, alt: 'Michael Scott Cunningham, AI lead and creative systems builder, Phoenix, Arizona' }] },
+  twitter: { card: 'summary_large_image', title: 'Michael Scott Cunningham | AI Lead & Creative Systems Builder', description: 'Turning new technology into useful workflows, memorable experiences, and things people can actually use.', images: ['https://michaelscott.me/og-image.png'] },
   icons: { icon: '/favicon.svg' },
 };
 const personJsonLd = {
