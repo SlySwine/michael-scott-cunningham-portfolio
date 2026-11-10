@@ -141,7 +141,7 @@ export default function Home(){return <>
             <strong>Current experiments</strong>
             <ul>
               <li><a href="https://slyswine.com" target="_blank" rel="noreferrer">Sly Swine Moto Gear</a></li>
-              <li>Family recipe box</li>
+              <li><a href="https://carolscooking.com" target="_blank" rel="noreferrer">Family recipe box</a></li>
               <li>Real-time usage tools</li>
               <li>AI-assisted creative systems</li>
             </ul>
